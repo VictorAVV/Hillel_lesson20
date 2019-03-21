@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Создаем MVC-блог на Symfony / {{title}}{% endblock %}
+
+{% block body %}
+<div class="jumbotron text-center">
+	<h3>Список статей</h3>
+</div>
+
+<div class="container">
+	<table class="table table-striped">
+		<thead>
+			<tr class="d-flex">
+				<th class="col-10" scope="col">Статья</th>
+				<th class="col-2" scope="col">Дата</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="d-flex">
+				<td class="col-10">
+					<a href="{{path('articleGet', {'id': 1})}}">Model-View-Controller</a>
+				</td>
+				<td class="col-2">2019-03-18 20:23:05</td>
+			</tr>
+			<tr class="d-flex">
+				<td class="col-10">
+					<a href="{{path('articleGet', {'id': 2})}}">Объектно-ориентированное программирование</a>
+				</td>
+				<td class="col-2">2019-03-18 20:23:30</td>
+			</tr>
+			<tr class="d-flex">
+				<td class="col-10">
+					<a href="{{path('articleGet', {'id': 3})}}">Bootstrap</a>
+				</td>
+				<td class="col-2">2019-03-18 20:23:43</td>
+			</tr>
+			<tr class="d-flex">
+				<td class="col-10">
+					<a href="{{path('articleGet', {'id': 4})}}">Bootstrap (фреймворк)</a>
+				</td>
+				<td class="col-2">2019-03-18 20:23:56</td>
+			</tr>
+			<tr class="d-flex">
+				<td class="col-10">
+					<a href="{{path('articleGet', {'id': 5})}}">HTML</a>
+				</td>
+				<td class="col-2">2019-03-18 22:07:37</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+{% endblock %}
