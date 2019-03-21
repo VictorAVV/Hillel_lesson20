@@ -23,6 +23,7 @@ class BlogController extends AbstractController
      */
     public function article($id)
     {   
+
         switch ($id) {
             case 1:
                 $title = 'Model-View-Controller';
@@ -40,12 +41,27 @@ class BlogController extends AbstractController
                 $title = 'HTML';
                 break;
             default:
-                $title = 'Article';
+                //redirect 404
+                //$title = 'Article';
+                $id = 0;
+        }
+
+        if ($id) {
+            $previousPage = $id - 1;
+            $nextPage = $id + 1;
+        }
+        if ($id == 1) {
+            $previousPage = false;
+        }
+        if ($id == 5) {
+            $nextPage = false;
         }
 
         return $this->render("blog/article$id.html.twig", [
             'controller_name' => 'BlogController',
             'title' => $title,
+            'previousPage' => $previousPage,
+            'nextPage' => $nextPage,
         ]);
     }
 }
