@@ -25,7 +25,7 @@ class CommonController extends AbstractController
     {
         return $this->render('common/aboutUs.html.twig', [
             'controller_name' => 'CommonController',
-            'title' => 'Homepage'
+            'title' => 'About us'
         ]);
     }
 }
