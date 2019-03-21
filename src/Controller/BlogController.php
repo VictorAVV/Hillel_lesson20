@@ -19,7 +19,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/article/{id}", name="articleGet")
+     * @Route("/blog/article/{id}", name="articleGet", requirements={"id"="\d+"})
      */
     public function article($id)
     {   
@@ -42,8 +42,7 @@ class BlogController extends AbstractController
                 break;
             default:
                 //redirect 404
-                //$title = 'Article';
-                $id = 0;
+                throw $this->createNotFoundException('Article not found!');
         }
 
         if ($id) {

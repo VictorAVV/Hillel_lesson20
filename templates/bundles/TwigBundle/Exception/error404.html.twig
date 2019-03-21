@@ -1,0 +1,15 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="jumbotron text-center">
+	<h3>Page not found</h3>
+</div>
+
+<div class="container">
+    <p>
+        Запрошенная страница не найдена. Проверьте опечатки в URL или
+        <a href="{{ path('homepage') }}">вернитесь на домашнюю сраницу</a>.
+    </p>
+</div>
+{% endblock %}
