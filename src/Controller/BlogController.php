@@ -10,26 +10,38 @@ use App\Repository\ArticleRepository;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/blog", name="blog")
+     * @Route("/blog/{orderBy}/{directionOrder}", name="blog")
      */
-    public function blog(ArticleRepository $articleRepository)
+    public function blog(ArticleRepository $articleRepository, $orderBy = 'datetime', $directionOrder = 'asc', $offset = 0)
     {
+        $directionOrder = \strtolower(trim($directionOrder));
+        if ('desc' != $directionOrder)
+        {
+            $directionOrder = 'asc';
+        }
+        
+        $orderBy = \strtolower(trim($orderBy));
+        if (!in_array($orderBy, ['title', 'author', 'datetime'])){
+            $orderBy = 'datetime';
+        }
 
-        /*$repository = $this->getDoctrine()->getRepository(Article::class);
-        $articles = $repository->findAll();*/
+        $articles = $articleRepository->findBy(array(), [$orderBy => $directionOrder]);
         
-        $articles = $articleRepository->findAll();
-        
+        //dump($orderBy);
+        //dump($directionOrder);
         dump($articles);
 
         return $this->render('blog/blog.html.twig', [
             'pageTitle' => 'Blog',
             'articles' => $articles,
+            'orderBy' => $orderBy,
+            'directionOrder' => $directionOrder,
+            'offset' => $offset,
         ]);
     }
 
     /**
-     * @Route("/blog/article/{id}", name="articleGet", requirements={"id"="\d+"})
+     * @Route("/article/{id}", name="articleGet", requirements={"id"="\d+"})
      */
     public function article($id, ArticleRepository $articleRepository)
     {   
