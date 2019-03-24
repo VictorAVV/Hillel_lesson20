@@ -46,29 +46,8 @@ class BlogController extends AbstractController
     public function article($id, ArticleRepository $articleRepository)
     {   
 
-        /*switch ($id) {
-            case 1:
-                $title = 'Model-View-Controller';
-                break;
-            case 2:
-                $title = 'Объектно-ориентированное программирование';
-                break;
-            case 3:
-                $title = 'Bootstrap';
-                break;
-            case 4:
-                $title = 'Bootstrap (фреймворк)';
-                break;
-            case 5:
-                $title = 'HTML';
-                break;
-            default:
-                //redirect 404
-                throw $this->createNotFoundException('Article not found!');
-        }*/
-
         $article = $articleRepository->findOneBy(['id' => $id]);
-dump($article);
+//dump($article);
         if (null == $article) {
             throw $this->createNotFoundException('Article not found!');
         }
@@ -84,11 +63,10 @@ dump($article);
             $nextPage = false;
         }
 
-
         $previousArticle = $articleRepository->findPrevNextArticles($article, 'prev');
-        dump($previousArticle);
+//        dump($previousArticle);
         $nextArticle = $articleRepository->findPrevNextArticles($article, 'next');
-        dump($nextArticle);
+//        dump($nextArticle);
 
         return $this->render("blog/article.html.twig", [
             'article' => $article,
