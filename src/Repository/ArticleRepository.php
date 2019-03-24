@@ -47,4 +47,31 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+      * @return Article[] Returns previous or next Article from Article id
+      */
+    public function findPrevNextArticles(Article $article, $criteria = 'next'): ?Article
+    {
+        
+        if ('prev' == \strtolower($criteria)) {
+            $order = 'DESC';
+            $condition = '<';
+        } else {
+            $order = 'ASC';
+            $condition = '>';
+        }
+        
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where("a.datetime $condition :datetime AND a.id != :id")
+            ->setParameter(':datetime', $article->getDatetime())
+            ->setParameter(':id', $article->getId())
+            ->orderBy('a.datetime', $order)
+            ->addOrderBy('a.id', $order)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

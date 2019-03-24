@@ -72,10 +72,16 @@ dump($article);
             $nextPage = false;
         }
 
+
+        $previousArticle = $articleRepository->findPrevNextArticles($article, 'prev');
+        dump($previousArticle);
+        $nextArticle = $articleRepository->findPrevNextArticles($article, 'next');
+        dump($nextArticle);
+
         return $this->render("blog/article.html.twig", [
             'article' => $article,
-            'previousPage' => $previousPage,
-            'nextPage' => $nextPage,
+            'previousPage' => $previousArticle?$previousArticle->getId():false,
+            'nextPage' => $nextArticle?$nextArticle->getId():false,
         ]);
     }
 }
