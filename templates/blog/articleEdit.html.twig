@@ -14,12 +14,13 @@
             {% if article.id %}
                 <input type="hidden" name="id" value="{{ article.id }}">
             {% endif %}
-            <input type="input" class="form-control" id="titleArticle" name="titleArticle" 
-                aria-describedby="titleArticle" placeholder="Enter title of article" required="required" value="{{ article.title }}">
+            <input type="input" class="form-control" id="titleArticle" name="titleArticle" aria-describedby="titleArticle"
+                placeholder="Enter title of article" required="required" value="{{ article.title }}">
         </div>
         <div class="form-group">
             <label for="contentArticle">Текст статьи:</label>
-            <textarea class="form-control" id="contentArticle" name="contentArticle" rows="10" required>{{ article.content }}</textarea>
+            <textarea class="form-control" id="contentArticle" 
+                name="contentArticle" rows="10" required>{{ article.content }}</textarea>
         </div>
         <div class="form-group">
             <label for="titleArticle">Автор:</label>
@@ -27,7 +28,13 @@
                 aria-describedby="authorArticle" placeholder="Enter author of article" value="{{ article.author }}">
         </div>
         <button type="submit" class="btn btn-primary">Сохранить</button>
-        <a class="btn btn-secondary ml-3" href="{{ path('articleGet', {'id': article.id}) }}" role="button">Отмена</a>
+        <a class="btn btn-secondary ml-3" 
+            {% if article.id %}
+                href="{{ path('articleGet', {'id': article.id}) }}"
+            {% else %}
+                href="{{ path('blog') }}"
+            {% endif %}
+            role="button">Отмена</a>
     </form>
 </div>
 
