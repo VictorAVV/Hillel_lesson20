@@ -31,10 +31,10 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog/article/{id}", name="articleGet", requirements={"id"="\d+"})
      */
-    public function article($id)
+    public function article($id, ArticleRepository $articleRepository)
     {   
 
-        switch ($id) {
+        /*switch ($id) {
             case 1:
                 $title = 'Model-View-Controller';
                 break;
@@ -53,6 +53,12 @@ class BlogController extends AbstractController
             default:
                 //redirect 404
                 throw $this->createNotFoundException('Article not found!');
+        }*/
+
+        $article = $articleRepository->findOneBy(['id' => $id]);
+dump($article);
+        if (null == $article) {
+            throw $this->createNotFoundException('Article not found!');
         }
 
         if ($id) {
@@ -66,9 +72,8 @@ class BlogController extends AbstractController
             $nextPage = false;
         }
 
-        return $this->render("blog/article$id.html.twig", [
-            'controller_name' => 'BlogController',
-            'title' => $title,
+        return $this->render("blog/article.html.twig", [
+            'article' => $article,
             'previousPage' => $previousPage,
             'nextPage' => $nextPage,
         ]);
