@@ -16,13 +16,12 @@ class BlogController extends AbstractController
     public function blog(ArticleRepository $articleRepository, $orderBy = 'datetime', $directionOrder = 'asc', $offset = 0)
     {
         $directionOrder = \strtolower(trim($directionOrder));
-        if ('desc' != $directionOrder)
-        {
+        if ('desc' != $directionOrder) {
             $directionOrder = 'asc';
         }
         
         $orderBy = \strtolower(trim($orderBy));
-        if (!in_array($orderBy, ['title', 'author', 'datetime'])){
+        if (!in_array($orderBy, ['title', 'author', 'datetime'])) {
             $orderBy = 'datetime';
         }
 
