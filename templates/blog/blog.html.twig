@@ -7,48 +7,29 @@
 	<h3>Список статей</h3>
 </div>
 
-{% set orderTitleBy, orderAuthorBy, orderDatetimeBy = 'asc', 'asc', 'asc' %}
-{% set iconOrderTitleBy, iconOrderAuthorBy, iconOrderDatetimeBy = ' text-black-50', ' text-black-50', ' text-black-50' %}
-
-{% if orderBy == 'title' %}
- 	{% if directionOrder == 'asc' %}
-		{% set orderTitleBy = 'desc' %}
-		{% set iconOrderTitleBy = '-desc' %}
-	{% else %}
-		{% set iconOrderTitleBy = '-asc' %}
-	{% endif %}
-{% endif %}
-{% if orderBy == 'author' %}
- 	{% if directionOrder == 'asc' %}
-		{% set orderAuthorBy = 'desc' %}
-		{% set iconOrderAuthorBy = '-desc' %}
-	{% else %}
-		{% set iconOrderAuthorBy = '-asc' %}
-	{% endif %}
-{% endif %}
-{% if orderBy == 'datetime' %}
- 	{% if directionOrder == 'asc' %}
-		{% set orderDatetimeBy = 'desc' %}
-		{% set iconOrderDatetimeBy = '-desc' %}
-	{% else %}
-		{% set iconOrderDatetimeBy = '-asc' %}
-	{% endif %}
-{% endif %}
+{% set direction = articles.getDirection() %}
 
 <div class="container">
 	<table class="table table-striped">
 		<thead>
 			<tr class="d-flex">
 				<th class="col-8" scope="col">
-					{# почему-то не работает {{ path('blog', {'orderBy': 'title', 'directionOrder':  orderTitleBy }) }} #}
-					<a href="{{ path('blog', {'orderBy': 'title'}) ~ '/' ~ orderTitleBy }}">Статья <i class="fa fa-sort{{ iconOrderTitleBy }}"></i></a>
+					{{ knp_pagination_sortable(articles, 'Статья', 'title') }}
+					<i class="fa fa-sort
+						{%- if articles.isSorted('title') -%} -{{direction}} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+					"></i>
+				</th>
+				<th class="col-2 {% if articles.isSorted('author') %}sorted{% endif %}" scope="col">
+					{{ knp_pagination_sortable(articles, 'Автор', 'author') }}
+					<i class="fa fa-sort
+						{%- if articles.isSorted('author') -%} -{{direction}} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+					"></i>
 				</th>
 				<th class="col-2" scope="col">
-					<a href="{{ path('blog', {'orderBy': 'author'}) ~ '/' ~ orderAuthorBy }}">Автор <i class="fa fa-sort{{ iconOrderAuthorBy }}"></i></a>
-				</th>
-				<th class="col-2" scope="col">
-				{# почему-то не работает {{ path('blog', {'orderBy': 'datetime'}) }} #}
-					<a href="{{ path('blog') ~ '/datetime/' ~ orderDatetimeBy }}">Дата <i class="fa fa-sort{{ iconOrderDatetimeBy }}"></i></a>
+					{{ knp_pagination_sortable(articles, 'Дата', 'datetime') }}
+					<i class="fa fa-sort
+						{%- if articles.isSorted('datetime') -%} -{{direction}} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+					"></i>
 				</th>
 			</tr>
 		</thead>
@@ -64,5 +45,11 @@
 		{% endfor %}
 		</tbody>
 	</table>
+	
+	<div class="navigation text-center">
+		{{ knp_pagination_render(articles, null, {}, {
+			'align': 'center',
+		}) }}
+    </div>
 </div>
 {% endblock %}

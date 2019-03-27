@@ -7,32 +7,22 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
 
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/blog/{orderBy}/{directionOrder}/{offset}", name="blog")
+     * @Route("/blog", name="blog")
      */
-    public function blog(ArticleRepository $articleRepository, $orderBy = 'datetime', $directionOrder = 'asc', $offset = 0)
+    public function blog(PaginatorInterface $paginator, ArticleRepository $articleRepository, Request $request)
     {
-        $directionOrder = \strtolower(trim($directionOrder));
-        if ('desc' != $directionOrder) {
-            $directionOrder = 'asc';
-        }
-        
-        $orderBy = \strtolower(trim($orderBy));
-        if (!in_array($orderBy, ['title', 'author', 'datetime'])) {
-            $orderBy = 'datetime';
-        }
+        //$paginator  = $this->get('knp_paginator');//not work in symfony 4
+        $articlesPerPage = 5;
+        $articles = $articleRepository->allArticles($paginator, $request, $articlesPerPage);
 
-        $articles = $articleRepository->findBy(array(), [$orderBy => $directionOrder]);
-        
         return $this->render('blog/blog.html.twig', [
             'pageTitle' => 'Blog',
             'articles' => $articles,
-            'orderBy' => $orderBy,
-            'directionOrder' => $directionOrder,
-            'offset' => $offset,
         ]);
     }
 
@@ -57,7 +47,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/article-create/", name="articleCreate")
+     * @Route("/article-create", name="articleCreate")
      */
     public function articleSave(Request $request, ArticleRepository $articleRepository)
     {   
