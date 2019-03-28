@@ -14,21 +14,21 @@
 		<thead>
 			<tr class="d-flex">
 				<th class="col-8" scope="col">
-					{{ knp_pagination_sortable(articles, 'Статья', 'title') }}
+					{{ knp_pagination_sortable(articles, 'Статья', 'a.title') }}
 					<i class="fa fa-sort
-						{%- if articles.isSorted('title') -%} -{{direction}} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+						{%- if articles.isSorted('a.title') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
 					"></i>
 				</th>
-				<th class="col-2 {% if articles.isSorted('author') %}sorted{% endif %}" scope="col">
-					{{ knp_pagination_sortable(articles, 'Автор', 'author') }}
+				<th class="col-2 {% if articles.isSorted('a.author') %}sorted{% endif %}" scope="col">
+					{{ knp_pagination_sortable(articles, 'Автор', 'a.author') }}
 					<i class="fa fa-sort
-						{%- if articles.isSorted('author') -%} -{{direction}} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+						{%- if articles.isSorted('a.author') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
 					"></i>
 				</th>
 				<th class="col-2" scope="col">
-					{{ knp_pagination_sortable(articles, 'Дата', 'datetime') }}
+					{{ knp_pagination_sortable(articles, 'Дата', 'a.datetime') }}
 					<i class="fa fa-sort
-						{%- if articles.isSorted('datetime') -%} -{{direction}} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+						{%- if articles.isSorted('a.datetime') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
 					"></i>
 				</th>
 			</tr>
@@ -46,7 +46,7 @@
 		</tbody>
 	</table>
 	
-	<div class="navigation text-center">
+	<div class="navigation">
 		{{ knp_pagination_render(articles, null, {}, {
 			'align': 'center',
 		}) }}

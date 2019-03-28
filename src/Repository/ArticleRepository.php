@@ -74,22 +74,4 @@ class ArticleRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
-    /**
-     * @return Article[] Returns all articles objects and use knp_paginator
-     */
-    
-    public function allArticles($paginator, $request, $articlesPerPage)
-    {
-        $query = $this->findAll();
-        return $articles = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1), // Define the page parameter
-            $articlesPerPage, // Items per page
-            [
-                'defaultSortFieldName' => 'datetime', 
-                'defaultSortDirection' => 'desc'
-            ],
-        );
-    }
 }

@@ -13,13 +13,24 @@ class BlogController extends AbstractController
 {
     /**
      * @Route("/blog", name="blog")
+     * @param Request $request input data: number of page, orderBy, direction of order, (limit articles per page)
      */
     public function blog(PaginatorInterface $paginator, ArticleRepository $articleRepository, Request $request)
     {
         //$paginator  = $this->get('knp_paginator');//not work in symfony 4
-        $articlesPerPage = 5;
-        $articles = $articleRepository->allArticles($paginator, $request, $articlesPerPage);
+        
+        $query = $articleRepository->createQueryBuilder('a')->select('a')->getQuery();
 
+        $articles = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // Define the page parameter
+            5, // articles per page
+            [
+                'defaultSortFieldName' => 'a.datetime', 
+                'defaultSortDirection' => 'desc'
+            ],
+        );
+        
         return $this->render('blog/blog.html.twig', [
             'pageTitle' => 'Blog',
             'articles' => $articles,
@@ -67,7 +78,7 @@ class BlogController extends AbstractController
             }
             if (strlen($request->request->get('authorArticle')) > 100000 ) {
                 //нужно создать обычную html страницу с текстом об ошибке
-                throw $this->createNotFoundException('Lenght of author\'s name must be less then 250 characters!');
+                throw $this->createNotFoundException('Length of author\'s name must be less then 250 characters!');
             }
 
             //if POST contains id - update article. Else create new article
