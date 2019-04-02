@@ -37,7 +37,7 @@
 		{% for article in articles %}
 			<tr class="d-flex">
 				<td class="col-8">
-					<a href="{{ path('articleGet', {'id': article.id}) }}">{{ article.title }}</a>
+					<a href="{{ path('article_view', {'id': article.id}) }}">{{ article.title }}</a>
 				</td>
 				<td class="col-2">{% if article.author %}{{ article.author }}{% else %}-{% endif %}</td>
 				<td class="col-2">{{ article.datetime|date('Y-m-d H:i:s') }}</td>

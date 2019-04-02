@@ -11,11 +11,11 @@
     <div class="clearfix mb-3">
         <div class="float-right">
             <a class="btn btn-danger btn-sm" 
-                href="{{ path('articleDelete', {'id': article.id}) }}" role="button">Удалить статью</a>
+                href="{{ path('article_delete', {'id': article.id}) }}" role="button">Удалить статью</a>
         </div>
         <div class="float-right mr-3">
             <a class="btn btn-primary btn-sm" 
-                href="{{ path('articleEdit', {'id': article.id}) }}" role="button">Редактировать статью</a>
+                href="{{ path('article_edit', {'id': article.id}) }}" role="button">Редактировать статью</a>
         </div>
     </div>
     {{ article.content|nl2br }}
@@ -27,12 +27,12 @@
     <div class="row">
     <div class="ml-auto mr-3">
         {% if previousPage %}
-            <a class="btn btn-secondary" href="{{path('articleGet', {'id': previousPage})}}" role="button">Предыдущая статья</a>
+            <a class="btn btn-secondary" href="{{path('article_view', {'id': previousPage})}}" role="button">Предыдущая статья</a>
         {% endif %}
     </div>
     <div class="mr-auto mr-3">
         {% if nextPage %}
-            <a class="btn btn-secondary" href="{{path('articleGet', {'id': nextPage})}}" role="button">Следующая статья</a>
+            <a class="btn btn-secondary" href="{{path('article_view', {'id': nextPage})}}" role="button">Следующая статья</a>
         {% endif %}
     </div>
 </div>    
