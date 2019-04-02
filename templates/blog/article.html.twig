@@ -10,20 +10,20 @@
 <div class="container">
     <div class="clearfix mb-3">
         <div class="float-right">
-            <a class="btn btn-danger btn-lg btn-sm" 
+            <a class="btn btn-danger btn-sm" 
                 href="{{ path('articleDelete', {'id': article.id}) }}" role="button">Удалить статью</a>
         </div>
         <div class="float-right mr-3">
-            <a class="btn btn-primary btn-lg btn-sm" 
+            <a class="btn btn-primary btn-sm" 
                 href="{{ path('articleEdit', {'id': article.id}) }}" role="button">Редактировать статью</a>
         </div>
     </div>
-	{{ article.content|nl2br }}
+    {{ article.content|nl2br }}
     <div class="article-author-date text-right">
         {% if article.author %}<p class="mb-0">{{article.author}}</p>{% endif %}
         <p>{{ article.datetime|date('Y-m-d H:i:s') }}</p>
     </div>
-    
+
     <div class="row">
     <div class="ml-auto mr-3">
         {% if previousPage %}
@@ -35,9 +35,5 @@
             <a class="btn btn-secondary" href="{{path('articleGet', {'id': nextPage})}}" role="button">Следующая статья</a>
         {% endif %}
     </div>
-    
-</div>
-
-</div>
-
+</div>    
 {% endblock %}

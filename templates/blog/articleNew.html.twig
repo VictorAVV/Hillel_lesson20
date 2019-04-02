@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MVC-блог на Symfony / {{ title }}{% endblock %}
+
+{% block body %}
+<div class="jumbotron text-center">
+	<h3>{{ title }}</h3>
+</div>
+<div class="container">
+	{{ form(form) }}
+</div>
+{% endblock %}

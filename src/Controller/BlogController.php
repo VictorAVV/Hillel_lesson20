@@ -9,11 +9,15 @@ use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 class BlogController extends AbstractController
 {
     /**
      * @Route("/blog", name="blog")
-     * @param Request $request input data: number of page, orderBy, direction of order, (limit articles per page)
+     * @param Request $request input data: page number, orderBy, direction of order, (limit articles per page)
      */
     public function blog(PaginatorInterface $paginator, ArticleRepository $articleRepository, Request $request)
     {
@@ -162,6 +166,52 @@ class BlogController extends AbstractController
             'title' => 'Удаление статьи',
             'article' => $article,
             'deleted' => false,
+        ]);
+    }
+
+
+     /**
+     * @Route("/new-article", name="articleNew")
+     */
+    public function articleNew(Request $request, ArticleRepository $articleRepository)
+    {   
+
+        $article = new Article();
+        $article->setDatetime(new \DateTime('now'));
+
+        $form = $this->createFormBuilder($article)
+            ->add('title', TextType::class, ['label' => 'Название статьи:'])
+            ->add('content', TextType::class, ['label' => 'Текст статьи:'])
+            ->add('author', TextType::class, ['label' => 'Автор:'])
+            ->add('save', SubmitType::class, ['label' => 'Сохранить'])
+            ->getForm();
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $form->getData() holds the submitted values
+            // but, the original `$task` variable has also been updated
+            $article = $form->getData();
+    
+            // ... perform some action, such as saving the task to the database
+            // for example, if Task is a Doctrine entity, save it!
+            // $entityManager = $this->getDoctrine()->getManager();
+            // $entityManager->persist($task);
+            // $entityManager->flush();
+    
+            //return $this->redirectToRoute('blog');
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($article);
+            $entityManager->flush();
+            
+            return $this->redirectToRoute("articleGet", [
+                'id' => $article->getId(),
+            ]);
+        }
+    
+        return $this->render('blog/articleNew.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Создание новой статьи',
         ]);
     }
 }

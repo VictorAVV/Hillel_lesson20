@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category index{% endblock %}
+
+{% block body %}
+<div class="jumbotron text-center">
+	<h3>Список категорий</h3>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-8">Имя категории</th>
+                <th class="col-4">Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr class="d-flex">
+                <td class="col-8">{{ category.name }}</td>
+                <td class="col-4">
+                    <a class="btn btn-primary btn-sm" href="{{ path('category_show', {'id': category.id}) }}">Показать</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('category_edit', {'id': category.id}) }}">Редактировать</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Не существует ни одной категории</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('category_new') }}">Создать новую категорию</a>
+</div>
+{% endblock %}
