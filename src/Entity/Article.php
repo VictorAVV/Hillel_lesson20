@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
@@ -18,11 +19,19 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 250,
+     *      minMessage = "Заголовок статьи должен быть длиннее {{ limit }} символов",
+     *      maxMessage = "Заголовок статьи должен быть короче {{ limit }} символов"
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min = 5)
      */
     private $content;
 
@@ -33,6 +42,10 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "Заголовок статьи должен быть менее {{ limit }} символов"
+     * )
      */
     private $author;
 
