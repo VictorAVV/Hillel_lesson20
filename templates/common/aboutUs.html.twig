@@ -20,6 +20,15 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;* @Route("/about-us", name="aboutUs")<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;*/
                 </p>
+                <p>Для создания сущностей использовал консольную команду:</p>
+                <p class="badge-info">&nbsp;php bin/console make:entity&nbsp;</p>
+                <p class="badge-info">&nbsp;php bin/console doctrine:schema:update --force&nbsp;</p>
+                <p>Было создано 2 сущности Article и Category.</p>
+                <p class="badge-info">&nbsp;php bin/console make:entity&nbsp;</p>
+                <p>Для сущности Article создано свойство 'category', которое имеет тип MenyToOne и связано с сущностью Category.</p>
+                <p>Созданы формы для Article и Category.</p>
+                <p>Создан CRUD для статей и категорий:</p>
+                <p class="badge-info">&nbsp;php bin/console make:crud&nbsp;</p>
         </div>
     </div>
 </div>

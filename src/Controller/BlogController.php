@@ -22,7 +22,7 @@ class BlogController extends AbstractController
      * @Route("/blog", name="blog")
      * @param Request $request input data: page number, orderBy, direction of order, (limit articles per page)
      */
-    public function blog(PaginatorInterface $paginator, ArticleRepository $articleRepository, Request $request)
+    public function blog(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request)
     {
         //$paginator  = $this->get('knp_paginator');//not work in symfony 4
         
@@ -118,8 +118,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-
-     /**
+    /**
      * @Route("/new", name="article_new", methods={"GET","POST"})
      */
     public function articleNew(Request $request)

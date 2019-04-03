@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,10 +19,23 @@ class CategoryController extends AbstractController
     /**
      * @Route("/", name="category_index", methods={"GET"})
      */
-    public function index(CategoryRepository $categoryRepository): Response
-    {
+    public function index(CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
+    {   
+        $query = $categoryRepository->createQueryBuilder('c')->select('c')->getQuery();
+
+        $categories = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // Define the page parameter
+            5, // articles per page
+            [
+                'defaultSortFieldName' => 'c.name', 
+                'defaultSortDirection' => 'asc'
+            ],
+        );
+
         return $this->render('category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
+            //'categories' => $categoryRepository->findAll(),
+            'categories' => $categories,
         ]);
     }
 

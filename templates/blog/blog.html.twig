@@ -10,6 +10,9 @@
 {% set direction = articles.getDirection() %}
 
 <div class="container">
+    <div class="float-right mb-3">
+        <a class="btn btn-primary btn-sm" href="{{ path('article_new') }}">Создать новую статью</a>
+    </div>
 	<table class="table table-striped">
 		<thead>
 			<tr class="d-flex">

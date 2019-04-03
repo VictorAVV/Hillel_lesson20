@@ -20,20 +20,22 @@
     </div>
     {{ article.content|nl2br }}
     <div class="article-author-date text-right">
+        {% if article.category %}<p class="mb-0">{{article.category}}</p>{% endif %}
         {% if article.author %}<p class="mb-0">{{article.author}}</p>{% endif %}
         <p>{{ article.datetime|date('Y-m-d H:i:s') }}</p>
     </div>
 
     <div class="row">
-    <div class="ml-auto mr-3">
-        {% if previousPage %}
-            <a class="btn btn-secondary" href="{{path('article_view', {'id': previousPage})}}" role="button">Предыдущая статья</a>
-        {% endif %}
-    </div>
-    <div class="mr-auto mr-3">
-        {% if nextPage %}
-            <a class="btn btn-secondary" href="{{path('article_view', {'id': nextPage})}}" role="button">Следующая статья</a>
-        {% endif %}
+        <div class="ml-auto mr-3">
+            {% if previousPage %}
+                <a class="btn btn-secondary" href="{{path('article_view', {'id': previousPage})}}" role="button">Предыдущая статья</a>
+            {% endif %}
+        </div>
+        <div class="mr-auto mr-3">
+            {% if nextPage %}
+                <a class="btn btn-secondary" href="{{path('article_view', {'id': nextPage})}}" role="button">Следующая статья</a>
+            {% endif %}
+        </div>
     </div>
 </div>    
 {% endblock %}
