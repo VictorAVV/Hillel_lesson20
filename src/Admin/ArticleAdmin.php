@@ -24,6 +24,7 @@ final class ArticleAdmin extends AbstractAdmin
                     ->add('category', EntityType::class, [
                         'class' => Category::class,
                         'choice_label' => 'name',
+                        'required' => false,
                     ])
                 ->end()
             ->end()
@@ -39,16 +40,23 @@ final class ArticleAdmin extends AbstractAdmin
             ->add('title')
             ->add('datetime')
             ->add('author')
+            ->add('category', null, [], EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+            ])
         ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id')
+            ->add('id')
             ->addIdentifier('title')
-            ->addIdentifier('datetime')
-            ->addIdentifier('author')
+            ->add('datetime', null, [
+                'format' => 'Y-m-d H:i:s',
+            ])
+            ->add('author')
+            ->add('category.name')
         ;
     }
 
