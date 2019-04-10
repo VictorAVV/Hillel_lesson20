@@ -15,22 +15,22 @@ final class ArticleAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->tab('Статья')
-                ->with('')
-                    ->add('title', TextType::class)
-                    ->add('content', TextareaType::class)
-                    ->add('datetime')
-                    ->add('author')
-                    ->add('category', EntityType::class, [
-                        'class' => Category::class,
-                        'choice_label' => 'name',
-                        'required' => false,
-                    ])
-                ->end()
-            ->end()
-            ->tab('Empty tab for additional options')
-                // ...
-            ->end()
+            ->add('title', TextType::class, [
+                'label' => 'Заголовок',
+            ])
+            ->add('content', TextareaType::class, [
+                'label' => 'Текст статьи',
+                'attr' => ['rows' => '10']
+            ])
+            ->add('author', null, [
+                'label' => 'Автор',
+            ])
+            ->add('category', EntityType::class, [
+                'label' => 'Категория',
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'required' => false,
+            ])
         ;
     }
 
@@ -51,12 +51,19 @@ final class ArticleAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->addIdentifier('title')
+            ->addIdentifier('title', null, [
+                'label' => 'Заголовок',
+            ])
             ->add('datetime', null, [
                 'format' => 'Y-m-d H:i:s',
+                'label' => 'Дата',
             ])
-            ->add('author')
-            ->add('category.name')
+            ->add('author', null, [
+                'label' => 'Автор',
+            ])
+            ->add('category.name', null, [
+                'label' => 'Категория',
+            ])
         ;
     }
 
@@ -65,5 +72,11 @@ final class ArticleAdmin extends AbstractAdmin
         return $object instanceof Article
             ? $object->getTitle()
             : 'Статья'; // shown in the breadcrumb on the create view
+    }
+
+    public function preValidate($article)
+    {   
+        // set current datetime for new and updated article
+        $article->setDatetime(new \DateTime('now'));
     }
 }
