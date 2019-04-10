@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class ArticleType extends AbstractType
 {
@@ -15,7 +15,7 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ['label' => 'Название статьи: *'])
-            ->add('content', null, ['label' => 'Текст статьи: *', 'attr' => array('rows' => '5')])
+            ->add('content', CKEditorType::class, ['label' => 'Текст статьи: *', 'attr' => array('rows' => '5')])
             ->add('author', TextType::class, ['label' => 'Автор:', 'required' => false])
             ->add('category', null, ['label' => 'Категория:'])
         ;

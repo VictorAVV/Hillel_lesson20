@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+
 final class ArticleAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
@@ -18,9 +20,9 @@ final class ArticleAdmin extends AbstractAdmin
             ->add('title', TextType::class, [
                 'label' => 'Заголовок',
             ])
-            ->add('content', TextareaType::class, [
+            ->add('content', CKEditorType::class, [
                 'label' => 'Текст статьи',
-                'attr' => ['rows' => '10']
+                //'attr' => ['rows' => '10']
             ])
             ->add('author', null, [
                 'label' => 'Автор',
