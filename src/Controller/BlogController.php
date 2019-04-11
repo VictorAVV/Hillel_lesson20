@@ -12,7 +12,7 @@ use App\Form\ArticleType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+//use CommentController;
 /**
  * @Route("/article")
  */
@@ -47,7 +47,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/{id}", name="article_view", requirements={"id"="\d+"})
      */
-    public function articleView($id, ArticleRepository $articleRepository)
+    public function articleView($id, ArticleRepository $articleRepository, Request $request)
     {   
         $article = $articleRepository->findOneBy(['id' => $id]);
         if (null == $article) {
@@ -57,10 +57,18 @@ class BlogController extends AbstractController
         $previousArticle = $articleRepository->findPrevNextArticles($article, 'prev');
         $nextArticle = $articleRepository->findPrevNextArticles($article, 'next');
 
+
+        $commentForm = $this->forward('App\Controller\CommentController::new', [
+            'request'  => $request,
+            'articleId' => $article,
+        ]);
+        //dump($comment_form);
+
         return $this->render("blog/articleShow.html.twig", [
             'article' => $article,
             'previousPage' => $previousArticle?$previousArticle->getId():false,
             'nextPage' => $nextArticle?$nextArticle->getId():false,
+            'commentForm' => $commentForm->getContent(),
         ]);
     }
 
