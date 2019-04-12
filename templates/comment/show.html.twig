@@ -24,6 +24,10 @@
                 <td>{{ comment.datetime ? comment.datetime|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
+                <th>Article Id</th>
+                <td>{{ comment.article.id }}</td>
+            </tr>
+            <tr>
                 <th>Parent_comment</th>
                 <td>{{ comment.parentComment }}</td>
             </tr>

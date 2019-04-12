@@ -19,20 +19,36 @@ class CommentController extends AbstractController
      * @Route("/", name="comment_index", methods={"GET"})
      */
     public function index(CommentRepository $commentRepository): Response
-    {
+    {   
         return $this->render('comment/index.html.twig', [
             'comments' => $commentRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="comment_new", methods={"GET","POST"})
+     * show all comments for article
      */
-    public function new(Request $request, $articleId = null): Response
+    public function getArticleComments($article): Response
+    {   
+        $comments = $this->getDoctrine()
+            ->getRepository(Comment::class)
+            ->findBy(['article' => $article]);
+
+        return $this->render('comment/articleComments.html.twig', [
+            'comments' => $comments,
+        ]);
+    }
+
+    /**
+     * роут не нужен
+     * Route("/new", name="comment_new", methods={"GET","POST"})
+     */
+    public function new(Request $request, $article = null): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
-        $comment->setArticle($articleId);
+        $comment->setArticle($article);
+        $comment->setDatetime(new \DateTime('now'));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -40,7 +56,7 @@ class CommentController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('comment_index');
+            return $this->redirectToRoute('article_view', ['id' => $article->getId()], 301);
         }
 
         return $this->render('comment/new.html.twig', [
@@ -50,6 +66,7 @@ class CommentController extends AbstractController
     }
 
     /**
+     * роут не нужен
      * @Route("/{id}", name="comment_show", methods={"GET"})
      */
     public function show(Comment $comment): Response
@@ -60,6 +77,7 @@ class CommentController extends AbstractController
     }
 
     /**
+     * роут не нужен
      * @Route("/{id}/edit", name="comment_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Comment $comment): Response

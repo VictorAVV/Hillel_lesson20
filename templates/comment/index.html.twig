@@ -12,6 +12,7 @@
                 <th>Content</th>
                 <th>Author</th>
                 <th>Datetime</th>
+                <th>Article Id</th>
                 <th>Parent_comment</th>
                 <th>actions</th>
             </tr>
@@ -23,6 +24,7 @@
                 <td>{{ comment.content }}</td>
                 <td>{{ comment.author }}</td>
                 <td>{{ comment.datetime ? comment.datetime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ comment.article.id }}</td>
                 <td>{{ comment.parentComment }}</td>
                 <td>
                     <a href="{{ path('comment_show', {'id': comment.id}) }}">show</a>
@@ -37,5 +39,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('comment_new') }}">Create new</a>
 {% endblock %}
