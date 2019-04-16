@@ -33,7 +33,7 @@ class BlogController extends AbstractController
             $request->query->getInt('page', 1), // Define the page parameter
             5, // articles per page
             [
-                'defaultSortFieldName' => 'a.datetime', 
+                'defaultSortFieldName' => 'a.updatedAt', 
                 'defaultSortDirection' => 'desc'
             ],
         );

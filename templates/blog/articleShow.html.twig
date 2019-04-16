@@ -22,7 +22,14 @@
     <div class="article-author-date text-right">
         {% if article.category %}<p class="mb-0">{{article.category}}</p>{% endif %}
         {% if article.author %}<p class="mb-0">{{article.author}}</p>{% endif %}
-        <p>{{ article.datetime|date('Y-m-d H:i:s') }}</p>
+        <div class="my-0">
+            <small>
+                <p class="my-0">Дата создания:</p>
+                <p class="my-0">{{ article.createdAt|date('Y-m-d H:i:s') }}</p>
+                <p class="my-0">Дата изменения:</p>
+                <p class="my-0">{{ article.updatedAt|date('Y-m-d H:i:s') }}</p>
+            </small>
+        </div>
     </div>
 
     <div class="row">

@@ -6,12 +6,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Article
 {
+    use ORMBehaviors\Timestampable\Timestampable;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,11 +44,6 @@ class Article
     private $content;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $datetime;
-
-    /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Length(
      *      max = 100,
@@ -66,7 +65,6 @@ class Article
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->datetime = new \DateTime();
     }
 
     public function getId(): ?int
@@ -94,18 +92,6 @@ class Article
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getDatetime(): ?\DateTimeInterface
-    {
-        return $this->datetime;
-    }
-
-    public function setDatetime(\DateTimeInterface $datetime): self
-    {
-        $this->datetime = $datetime;
 
         return $this;
     }
@@ -163,5 +149,17 @@ class Article
         }
 
         return $this;
+    }
+
+    /** @ORM\PrePersist */
+    public function setDatetimeForNewArticle()
+    {   
+        $this->setCreatedAt(new \DateTime())->setUpdatedAt(new \DateTime());
+    }
+
+    /** @ORM\PreUpdate */
+    public function setUpdatedDatetimeForExistsArticle()
+    {   
+        $this->setUpdatedAt(new \DateTime());
     }
 }

@@ -29,9 +29,9 @@
 					"></i>
 				</th>
 				<th class="col-2" scope="col">
-					{{ knp_pagination_sortable(articles, 'Дата', 'a.datetime') }}
+					{{ knp_pagination_sortable(articles, 'Дата', 'a.updatedAt') }}
 					<i class="fa fa-sort
-						{%- if articles.isSorted('a.datetime') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+						{%- if articles.isSorted('a.updatedAt') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
 					"></i>
 				</th>
 			</tr>
@@ -43,7 +43,7 @@
 					<a href="{{ path('article_view', {'id': article.id}) }}">{{ article.title }}</a>
 				</td>
 				<td class="col-2">{% if article.author %}{{ article.author }}{% else %}-{% endif %}</td>
-				<td class="col-2">{{ article.datetime|date('Y-m-d H:i:s') }}</td>
+				<td class="col-2">{{ article.updatedAt|date('Y-m-d H:i:s') }}</td>
 			</tr>
 		{% endfor %}
 		</tbody>

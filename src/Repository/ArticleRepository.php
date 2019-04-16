@@ -64,10 +64,10 @@ class ArticleRepository extends ServiceEntityRepository
         
         return $this->createQueryBuilder('a')
             ->select('a')
-            ->where("a.datetime $condition :datetime AND a.id != :id")
-            ->setParameter(':datetime', $article->getDatetime())
+            ->where("a.updatedAt $condition :updatedAt AND a.id != :id")
+            ->setParameter(':updatedAt', $article->getUpdatedAt())
             ->setParameter(':id', $article->getId())
-            ->orderBy('a.datetime', $order)
+            ->orderBy('a.updatedAt', $order)
             ->addOrderBy('a.id', $order)
             ->setMaxResults(1)
             ->getQuery()
