@@ -28,23 +28,12 @@ class CommentController extends AbstractController
     /**
      * show all comments for article
      */
-    public function getArticleComments($article): Response
+    public function getArticleComments(Request $request, $article = null): Response
     {   
-        $comments = $this->getDoctrine()
-            ->getRepository(Comment::class)
-            ->findBy(['article' => $article]);
+        if (null === $article) {
+            throw $this->createNotFoundException('Article not found!');
+        }
 
-        return $this->render('comment/articleComments.html.twig', [
-            'comments' => $comments,
-        ]);
-    }
-
-    /**
-     * роут не нужен
-     * Route("/new", name="comment_new", methods={"GET","POST"})
-     */
-    public function new(Request $request, $article = null): Response
-    {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $comment->setArticle($article);
@@ -56,10 +45,19 @@ class CommentController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('article_view', ['id' => $article->getId()], 301);
+            unset($comment);
+            unset($form);
+            $comment = new Comment();
+            $form = $this->createForm(CommentType::class, $comment);
+            //return $this->redirectToRoute('article_view', ['id' => $article->getId()]);
         }
 
-        return $this->render('comment/new.html.twig', [
+        $comments = $this->getDoctrine()
+            ->getRepository(Comment::class)
+            ->findBy(['article' => $article]);
+
+        return $this->render('comment/articleComments.html.twig', [
+            'comments' => $comments,
             'comment' => $comment,
             'form' => $form->createView(),
         ]);

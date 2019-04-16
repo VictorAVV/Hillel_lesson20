@@ -6,9 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+//use Doctrine\ORM\Events;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Category
 {
@@ -20,9 +22,9 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(
-     *      min = 3,
+     *      min = 0,
      *      max = 250,
      *      minMessage = "Имя категории должно быть длиннее {{ limit }} символов",
      *      maxMessage = "Имя категории должно быть короче {{ limit }} символов"
@@ -34,6 +36,27 @@ class Category
      * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="category")
      */
     private $articles;
+
+    private $image;
+    
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /** @ORM\PreFlush */
+    public function testPreFlush()
+    {   
+        dump($this);
+        exit;
+    }
 
     public function __construct()
     {

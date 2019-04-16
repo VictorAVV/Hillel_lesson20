@@ -12,9 +12,8 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content', null, ['label' => 'Новый комментарий:'])
+            ->add('content', null, ['label' => 'Новый комментарий:', 'required' => false])
             ->add('author', null, ['label' => 'Автор:'])
-            //->add('parent_comment')
         ;
     }
 

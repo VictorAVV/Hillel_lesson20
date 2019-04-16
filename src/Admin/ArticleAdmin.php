@@ -76,9 +76,4 @@ final class ArticleAdmin extends AbstractAdmin
             : 'Статья'; // shown in the breadcrumb on the create view
     }
 
-    public function preValidate($article)
-    {   
-        // set current datetime for new and updated article
-        $article->setDatetime(new \DateTime('now'));
-    }
 }

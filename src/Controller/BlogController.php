@@ -57,21 +57,11 @@ class BlogController extends AbstractController
         $previousArticle = $articleRepository->findPrevNextArticles($article, 'prev');
         $nextArticle = $articleRepository->findPrevNextArticles($article, 'next');
 
-        $articleComments = $this->forward('App\Controller\CommentController::getArticleComments', [
-            'article' => $article,
-        ]);
-
-        $newCommentForm = $this->forward('App\Controller\CommentController::new', [
-            'request'  => $request,
-            'article' => $article,
-        ]);
-
         return $this->render("blog/articleShow.html.twig", [
             'article' => $article,
+            'request' => $request,
             'previousPage' => $previousArticle?$previousArticle->getId():false,
             'nextPage' => $nextArticle?$nextArticle->getId():false,
-            'articleComments' => $articleComments->getContent(),
-            'newCommentForm' => $newCommentForm->getContent(),
         ]);
     }
 
@@ -137,7 +127,6 @@ class BlogController extends AbstractController
 
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
-        $article->setDatetime(new \DateTime('now'));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

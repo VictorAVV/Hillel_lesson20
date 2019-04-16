@@ -33,8 +33,10 @@ class Article
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      * @Assert\Length(min = 5)
      */
+    //Assert\Length(min = 5) not work for CKEditor 
     private $content;
 
     /**
@@ -64,6 +66,7 @@ class Article
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->datetime = new \DateTime();
     }
 
     public function getId(): ?int
