@@ -37,7 +37,6 @@ class CommentController extends AbstractController
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $comment->setArticle($article);
-        $comment->setDatetime(new \DateTime('now'));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

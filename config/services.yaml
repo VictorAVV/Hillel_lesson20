@@ -31,10 +31,17 @@ services:
         class: App\Admin\CategoryAdmin
         arguments: [~, App\Entity\Category, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Блог', label: Категории }
+            - { name: sonata.admin, manager_type: orm, group: Blog, label: Категории }
 
     admin.article:
         class: App\Admin\ArticleAdmin
         arguments: [~, App\Entity\Article, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Блог', label: Статьи }
+            - { name: sonata.admin, manager_type: orm, group: Blog, label: Статьи }
+
+    admin.comment:
+        class: App\Admin\CommentAdmin
+        arguments: [~, App\Entity\Comment, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Blog, label: Комментарии }
+        public: true

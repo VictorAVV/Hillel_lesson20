@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -111,5 +113,11 @@ class Comment
         $this->article = $article;
 
         return $this;
+    }
+
+    /** @ORM\PrePersist */
+    public function setDatetimeForNewComment()
+    {   
+        $this->setDatetime(new \DateTime());
     }
 }

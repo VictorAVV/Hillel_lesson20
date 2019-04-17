@@ -40,7 +40,7 @@ final class ArticleAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('title')
-            ->add('datetime')
+            ->add('updatedAt')
             ->add('author')
             ->add('category', null, [], EntityType::class, [
                 'class' => Category::class,
@@ -56,7 +56,7 @@ final class ArticleAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Заголовок',
             ])
-            ->add('datetime', null, [
+            ->add('updatedAt', null, [
                 'format' => 'Y-m-d H:i:s',
                 'label' => 'Дата',
             ])
