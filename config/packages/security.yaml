@@ -19,7 +19,8 @@ security:
             guard:
                 authenticators:
                     - App\Security\SecurityAuthenticator
-
+            logout:
+                path: app_logout
             # activate different ways to authenticate
 
             # http_basic: true
@@ -33,5 +34,5 @@ security:
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/category, roles: ROLE_USER }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
