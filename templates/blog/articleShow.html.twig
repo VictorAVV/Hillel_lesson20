@@ -8,6 +8,7 @@
 </div>
 
 <div class="container">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="clearfix mb-3">
         <div class="float-right">
             <a class="btn btn-danger btn-sm" 
@@ -18,6 +19,7 @@
                 href="{{ path('article_edit', {'id': article.id}) }}" role="button">Редактировать статью</a>
         </div>
     </div>
+    {% endif %}
     {{ article.content|raw }}
     <div class="article-author-date text-right">
         {% if article.category %}<p class="mb-0">{{article.category}}</p>{% endif %}

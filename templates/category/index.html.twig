@@ -41,5 +41,10 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="navigation">
+		{{ knp_pagination_render(categories, null, {}, {
+			'align': 'center',
+		}) }}
+    </div>
 </div>
 {% endblock %}

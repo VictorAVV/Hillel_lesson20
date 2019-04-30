@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form, {'attr': {'class': 'form-group'}}) }}
+    <button class="btn btn-primary mr-2">{{ button_label|default('Сохранить') }}</button>
+    <a class="btn btn-secondary" href="{{ path('homepage') }}">Отмена</a>
+{{ form_end(form) }}

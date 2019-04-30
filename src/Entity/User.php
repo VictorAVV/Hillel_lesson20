@@ -4,10 +4,16 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     "email",
+ *     message = "Это значение '{{ value }}' уже используется.",
+ * )
  */
 class User implements UserInterface
 {
@@ -19,7 +25,18 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(
+     *     type="string", 
+     *     length=180, 
+     *     unique=true,
+     * )
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     * )
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 180,
+     * )
      */
     private $email;
 
@@ -27,7 +44,7 @@ class User implements UserInterface
      * @ORM\Column(type="text")
      */
     // @ORM\Column(type="json") - MariaDB not has type 'json'
-    private $roles = [];
+    private $roles = '';
 
     /**
      * @var string The hashed password
@@ -36,9 +53,17 @@ class User implements UserInterface
     private $password;
 
     /**
+     * User's entered password. Not save in DB.
+     * @Assert\Length(
+     *      max = 100,
+     * )
+     */
+    private $userPassword;
+
+    /**
      * @ORM\Column(type="boolean", options={"default":1})
      */
-    private $enabled;
+    private $enabled = 1;
 
     /**
      * @ORM\Column(type="datetime")
@@ -106,6 +131,17 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getUserPassword(): string
+    {
+        return (string) $this->userPassword;
+    }
+
+    public function setUserPassword(string $password): self
+    {
+        $this->userPassword = $password;
+
+        return $this;
+    }
     /**
      * @see UserInterface
      */

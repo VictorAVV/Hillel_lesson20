@@ -11,10 +11,13 @@
         <p class="my-0">{{ comment.content }}</p>
     </div>
 {% else %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="">
         Оставь первый комментарий
     </div>
+    {% endif %}
 {% endfor %}
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <hr>
-
-{{ include('comment/_form.html.twig') }}
+    {{ include('comment/_form.html.twig') }}
+{% endif %}

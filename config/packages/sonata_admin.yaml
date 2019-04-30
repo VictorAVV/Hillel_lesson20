@@ -3,6 +3,19 @@ sonata_admin:
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
+        groups:
+            Blog:
+                keep_open: true
+            Home:
+                keep_open: true
+                icon: '<i class="fa fa-home"></i>'
+                label: ~
+                label_catalogue: ~
+                items:
+                    - route: blog
+                      label: Блог
+                    - route: category_index
+                      label: Категории
 
 sonata_block:
     blocks:

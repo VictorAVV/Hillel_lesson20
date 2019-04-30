@@ -10,6 +10,10 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        #backend_users:
+        #    memory:
+        #        users:
+        #            john_admin: { password: '$2y$13$rpmMIov17QDB4ZDabNhSeuXfQVT6.6ZZWuEkk9zLHRNPIjWWej6S', roles: ['ROLE_ADMIN'] }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -33,6 +37,10 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/category, roles: ROLE_USER }
+        - { path: ^/article/blog, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/article/\d, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/article, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/category, roles: ROLE_USER }
+
         # - { path: ^/profile, roles: ROLE_USER }
