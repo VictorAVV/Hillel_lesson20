@@ -30,11 +30,6 @@ class Comment
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=60, nullable=true)
-     */
-    private $author;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $datetime;
@@ -68,18 +63,6 @@ class Comment
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?string $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }

@@ -53,8 +53,8 @@ class Category
     /** @ORM\PreFlush */
     public function testPreFlush()
     {   
-        dump($this);
-        exit;
+        //dump($this);
+        //exit;
     }
 
     public function __construct()

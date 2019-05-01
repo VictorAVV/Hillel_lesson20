@@ -2,6 +2,7 @@
 namespace App\Admin;
 
 use App\Entity\Category;
+use App\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -24,8 +25,11 @@ final class ArticleAdmin extends AbstractAdmin
                 'label' => 'Текст статьи',
                 //'attr' => ['rows' => '10']
             ])
-            ->add('author', null, [
+            ->add('user', EntityType::class, [
                 'label' => 'Автор',
+                'class' => User::class,
+                'choice_label' => 'name',
+                'required' => true,
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Категория',
@@ -41,7 +45,10 @@ final class ArticleAdmin extends AbstractAdmin
         $datagridMapper
             ->add('title')
             ->add('updatedAt')
-            ->add('author')
+            ->add('user', null, [], EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'name',
+            ])
             ->add('category', null, [], EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
@@ -60,7 +67,7 @@ final class ArticleAdmin extends AbstractAdmin
                 'format' => 'Y-m-d H:i:s',
                 'label' => 'Дата',
             ])
-            ->add('author', null, [
+            ->add('user.name', null, [
                 'label' => 'Автор',
             ])
             ->add('category.name', null, [

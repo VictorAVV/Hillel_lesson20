@@ -16,7 +16,6 @@ class ArticleType extends AbstractType
         $builder
             ->add('title', TextType::class, ['label' => 'Название статьи: *'])
             ->add('content', CKEditorType::class, ['label' => 'Текст статьи: *', 'attr' => array('rows' => '5')])
-            ->add('author', TextType::class, ['label' => 'Автор:', 'required' => false])
             ->add('category', null, ['label' => 'Категория:'])
         ;
     }

@@ -22,7 +22,7 @@
             <tr>
                 <td>{{ comment.id }}</td>
                 <td>{{ comment.content }}</td>
-                <td>{{ comment.author }}</td>
+                <td>{{ comment.user.name | default('-unknown-') }}</td>
                 <td>{{ comment.datetime ? comment.datetime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ comment.article.id }}</td>
                 <td>{{ comment.parentComment }}</td>

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 final class CommentAdmin extends AbstractAdmin
 {
@@ -18,7 +20,10 @@ final class CommentAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('content')
-            ->add('author')
+            ->add('user', null, [], EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'name',
+            ])
             ->add('datetime')
             ->add('parent_comment')
             ;
@@ -29,7 +34,9 @@ final class CommentAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('content')
-            ->add('author')
+            ->add('user.name', null, [
+                'label' => 'Автор',
+            ])
             ->add('datetime')
             ->add('article.title')
             ->add('_action', null, [
@@ -45,7 +52,12 @@ final class CommentAdmin extends AbstractAdmin
         $formMapper
             ->add('id')
             ->add('content')
-            ->add('author')
+            ->add('user', EntityType::class, [
+                'label' => 'Автор',
+                'class' => User::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
             ->add('parent_comment')
             ;
     }
@@ -55,7 +67,7 @@ final class CommentAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('content')
-            ->add('author')
+            ->add('user.name')
             ->add('datetime')
             ->add('parent_comment')
             ;

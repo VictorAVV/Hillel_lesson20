@@ -28,10 +28,10 @@
 						{%- if articles.isSorted('a.title') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
 					"></i>
 				</th>
-				<th class="col-2 {% if articles.isSorted('a.author') %}sorted{% endif %}" scope="col">
-					{{ knp_pagination_sortable(articles, 'Автор', 'a.author') }}
+				<th class="col-2 {% if articles.isSorted('aUser.name') %}sorted{% endif %}" scope="col">
+					{{ knp_pagination_sortable(articles, 'Автор', 'aUser.name') }}
 					<i class="fa fa-sort
-						{%- if articles.isSorted('a.author') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
+						{%- if articles.isSorted('aUser.name') -%} -{{ direction }} {%- else -%} {{ ' text-black-50' }} {%- endif -%}
 					"></i>
 				</th>
 				<th class="col-2" scope="col">
@@ -48,7 +48,7 @@
 				<td class="col-8">
 					<a href="{{ path('article_view', {'id': article.id}) }}">{{ article.title }}</a>
 				</td>
-				<td class="col-2">{% if article.author %}{{ article.author }}{% else %}-{% endif %}</td>
+				<td class="col-2">{{ article.user.name | default('-') }}</td>
 				<td class="col-2">{{ article.updatedAt|date('Y-m-d H:i:s') }}</td>
 			</tr>
 		{% endfor %}

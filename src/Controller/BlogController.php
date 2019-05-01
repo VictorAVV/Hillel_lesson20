@@ -26,7 +26,7 @@ class BlogController extends AbstractController
     {
         //$paginator  = $this->get('knp_paginator');//not work in symfony 4
         
-        $query = $articleRepository->createQueryBuilder('a')->select('a')->getQuery();
+        $query = $articleRepository->createQueryBuilder('a')->select('a')->leftJoin('a.user', 'aUser')->getQuery();
 
         $articles = $paginator->paginate(
             $query,
@@ -124,13 +124,13 @@ class BlogController extends AbstractController
      */
     public function articleNew(Request $request)
     {   
-
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $article->setUser($this->getUser());
             $entityManager->persist($article);
             $entityManager->flush();
 

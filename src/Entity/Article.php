@@ -44,15 +44,6 @@ class Article
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     * @Assert\Length(
-     *      max = 100,
-     *      maxMessage = "Заголовок статьи должен быть менее {{ limit }} символов"
-     * )
-     */
-    private $author;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="articles")
      */
     private $category;
@@ -97,18 +88,6 @@ class Article
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?string $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }

@@ -5,7 +5,7 @@
     <div class="">
         <p class="my-0 text-secondary">
             <small>
-                <span class="text-primary">{{ comment.author }}</span> {{ comment.datetime ? comment.datetime|date('Y-m-d H:i:s') : '' }}
+                <span class="text-primary">{{ comment.user.name | default('-unknown-') }}</span> {{ comment.datetime ? comment.datetime|date('Y-m-d H:i:s') : '' }}
             </small>
         </p>
         <p class="my-0">{{ comment.content }}</p>

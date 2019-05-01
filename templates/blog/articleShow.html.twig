@@ -22,8 +22,8 @@
     {% endif %}
     {{ article.content|raw }}
     <div class="article-author-date text-right">
-        {% if article.category %}<p class="mb-0">{{article.category}}</p>{% endif %}
-        {% if article.author %}<p class="mb-0">{{article.author}}</p>{% endif %}
+        {% if article.category %}<p class="mb-0"><i>Категория: </i>{{article.category}}</p>{% endif %}
+        {% if article.user.name is defined %}<p class="mb-0"><i>Автор: </i>{{article.user.name}}</p>{% endif %}
         <div class="my-0">
             <small>
                 <p class="my-0">Дата создания:</p>
