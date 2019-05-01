@@ -62,6 +62,11 @@ class Article
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="articles")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -161,5 +166,17 @@ class Article
     public function setUpdatedDatetimeForExistsArticle()
     {   
         $this->setUpdatedAt(new \DateTime());
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

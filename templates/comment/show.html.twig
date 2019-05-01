@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <th>Author</th>
-                <td>{{ comment.author }}</td>
+                <td>{{ comment.user.name ? comment.user.name : 'unknown'}}</td>
             </tr>
             <tr>
                 <th>Datetime</th>
