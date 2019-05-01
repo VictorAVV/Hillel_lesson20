@@ -11,9 +11,13 @@
 
 <div class="container">
 	{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <div class="float-right mb-3">
-        <a class="btn btn-primary btn-sm" href="{{ path('article_new') }}">Создать новую статью</a>
-    </div>
+		{% if app.user.isBanned() %}
+        	<p class="text-danger float-right">Вы забанены до {{ app.user.bannedUntil|date('Y/m/d') }} и не можете создавать статьи!</p>
+    	{% else %}
+			<div class="float-right mb-3">
+				<a class="btn btn-primary btn-sm" href="{{ path('article_new') }}">Создать новую статью</a>
+			</div>
+		{% endif %}		
 	{% endif %}
 	<table class="table table-striped">
 		<thead>

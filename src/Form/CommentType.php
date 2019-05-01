@@ -13,7 +13,6 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('content', null, ['label' => 'Новый комментарий:', 'required' => false])
-            ->add('author', null, ['label' => 'Автор:'])
         ;
     }
 

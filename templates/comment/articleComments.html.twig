@@ -19,5 +19,9 @@
 {% endfor %}
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <hr>
-    {{ include('comment/_form.html.twig') }}
+    {% if app.user.isBanned() %}
+        <p class="text-danger">Вы забанены до {{ app.user.bannedUntil|date('Y/m/d') }} и не можете оставлять комментарии!</p>
+    {% else %}
+        {{ include('comment/_form.html.twig') }}
+    {% endif %}
 {% endif %}
