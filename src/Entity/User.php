@@ -70,6 +70,20 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 150,
+     * )
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $bannedUntil;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -112,6 +126,33 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = json_encode($roles);
+
+        return $this;
+    }
+    
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if ($role === 'ROLE_USER') {
+            return $this;
+        }
+        $roles = $this->getRoles();
+        if (!in_array($role, $roles, true)) {
+            $roles[] = $role;
+            $this->setRoles($roles);
+        }
+        return $this;
+    }
+    
+    public function removeRole($role)
+    {
+        $roles = $this->getRoles();
+        if (false !== $key = array_search(strtoupper($role), $roles, true)) {
+            unset($roles[$key]);
+
+            $roles = array_values($roles);
+            $this->setRoles($roles);
+        }
 
         return $this;
     }
@@ -183,9 +224,58 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * Tells if the the given user has the super admin role.
+     * @return bool
+     */
+    public function isSuperAdmin()
+    {
+        return in_array('ROLE_SUPER_ADMIN', $this->getRoles());
+    }
+
     /** @ORM\PrePersist */
     public function setCreatedAtForNewUser()
     {   
         $this->setCreatedAt(new \DateTime());
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getBannedUntil(): ?\DateTimeInterface
+    {
+        return $this->bannedUntil;
+    }
+
+    public function setBannedUntil(?\DateTimeInterface $bannedUntil): self
+    {
+        $this->bannedUntil = $bannedUntil;
+
+        return $this;
+    }
+
+    /**
+     * check if user banned now
+     */
+    public function isBanned(): bool
+    {
+        if (null === $this->bannedUntil) {
+            return false;
+        }
+
+        if ( (new \DateTime("now")) < $this->bannedUntil ) {
+            return true;
+        }
+        
+        return false;
     }
 }

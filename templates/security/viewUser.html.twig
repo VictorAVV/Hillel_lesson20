@@ -16,10 +16,18 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="container">
         <div class="container my-3 px-0">
+            <strong>Имя:</strong>
+            <p>{{ user.name }}</p>
             <strong>Email:</strong>
             <p>{{ user.email }}</p>
             <strong>Дата регистрации:</strong>
             <p>{{ user.createdAt|date("Y/m/d H:i:s") }}</p>
+            <strong>Разрешено создавать статьи и комментарии:</strong>
+            {% if user.isBanned() %}
+                Нет
+            {% else %}
+                Да
+            {% endif %}
         </div>
 
         <a class="btn btn-secondary" href="{{ path('homepage') }}">Домой</a>
