@@ -66,29 +66,39 @@ class CommentController extends AbstractController
             //return $this->redirectToRoute('article_view', ['id' => $article->getId()]);
         }
 
-        $comments = $this->getDoctrine()
+        $commentsCount = count($this->getDoctrine()
             ->getRepository(Comment::class)
-            ->findBy(['article' => $article]);
+            ->findBy(['article' => $article]));
 
-        dump($this->getDoctrine()->getRepository(Comment::class)->getRootNodes());    
+        //dump($this->getDoctrine()->getRepository(Comment::class)->getRootNodes());    
+        $comments = [];
 
-        $comments2 = $this->getDoctrine()->getRepository(Comment::class)->getTree('', 't', ['articleId' => $article->getId()]);
-        dump($comments2);
-
-        $comments3 = $this->getDoctrine()->getRepository(Comment::class)
-            ->createQueryBuilder('c')
+        $rootCommentsOfArticle = $this->getDoctrine()->getRepository(Comment::class)->createQueryBuilder('c')
             ->Join('c.article', 'carticle')
             ->andWhere("c.materializedPath = ''")
             ->andWhere('carticle.id = :aid')
             ->setParameter('aid', $article->getId())
             ->getQuery()
-            ->getResult()
-        ;
-        dump($comments3);
+            ->getResult();
+        
+        dump($rootCommentsOfArticle);
+
+        //если вызвать getTree() только один раз, то не прогрузятся все дочерние комментарии
+        foreach($rootCommentsOfArticle as $value){
+            $getTreeForRootComment = $this->getDoctrine()->getRepository(Comment::class)->getTree('/' . ($value->getId()), 't', ['articleId' => $article->getId()]);
+            if ($getTreeForRootComment) {
+                $comments[] = $getTreeForRootComment;
+            }
+        }
+
+        //$comments2 = $this->getDoctrine()->getRepository(Comment::class)->getTree('', 't', ['articleId' => $article->getId()]);
+        //dump($comments2);
+
+        dump($comments);
 
         return $this->render('comment/articleComments.html.twig', [
-            'comments' => $comments3,
-            'commentsCount' => count($comments),
+            'comments' => $comments,
+            'commentsCount' => $commentsCount,
             'comment' => $comment,
             'form' => $form->createView(),
         ]);

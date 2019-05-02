@@ -9,7 +9,7 @@
             </p>
             <p class="my-0" id=''>{{ comment.content }}</p>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <p class="my-0"><small><a class="text-secondary btn-slide" href="{{ path('app_login') }}">Комментировать</a></small></p>
+                <p class="my-0"><small><a class="text-secondary btn-slide" href="{{ path('app_login') }}">Ответить</a></small></p>
             {% endif %}
             {% if comment.childNodes %}
                 <ul class="">

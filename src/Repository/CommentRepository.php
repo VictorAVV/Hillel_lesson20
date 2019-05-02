@@ -67,11 +67,13 @@ class CommentRepository extends ServiceEntityRepository
      * @param array        $extraParams
      */
     protected function addFlatTreeConditions(\Doctrine\ORM\QueryBuilder $qb, $extraParams)
-    {
-        $qb = $qb
-            ->Join('t.article', 'c_article')
-            ->andWhere('c_article.id = :aid')
-            ->setParameter('aid', $extraParams['articleId'])
-            ;
+    {   
+        if (!empty($extraParams)) {
+            $qb = $qb
+                ->Join('t.article', 'c_article')
+                ->andWhere('c_article.id = :aid')
+                ->setParameter('aid', $extraParams['articleId'])
+                ;
+        }
     }
 }
