@@ -56,17 +56,17 @@ class Comment implements ORMBehaviors\Tree\NodeInterface, \ArrayAccess
     {
         return $this->id;
     }
+    
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
 
     public function getContent(): ?string
     {
         return $this->content;
-    }
-
-    public function setParentComment(?int $parent_comment): self
-    {
-        $this->parent_comment = $parent_comment;
-
-        return $this;
     }
 
     public function getArticle(): ?Article
