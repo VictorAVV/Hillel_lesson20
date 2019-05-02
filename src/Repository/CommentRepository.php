@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Knp\DoctrineBehaviors\ORM as ORMBehaviors;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,6 +15,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    use ORMBehaviors\Tree\Tree;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Comment::class);
@@ -47,4 +50,28 @@ class CommentRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getMaxId()
+    {
+        return $this->createQueryBuilder('c')
+                    ->select('MAX(c.id) as idMax')
+                    ->getQuery()
+                    ->getSingleResult();
+    }
+
+    /**
+     * manipulates the flat tree query builder before executing it.
+     * Override this method to customize the tree query
+     *
+     * @param QueryBuilder $qb
+     * @param array        $extraParams
+     */
+    protected function addFlatTreeConditions(\Doctrine\ORM\QueryBuilder $qb, $extraParams)
+    {
+        $qb = $qb
+            ->Join('t.article', 'c_article')
+            ->andWhere('c_article.id = :aid')
+            ->setParameter('aid', $extraParams['articleId'])
+            ;
+    }
 }

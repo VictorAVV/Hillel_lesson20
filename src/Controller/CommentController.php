@@ -27,13 +27,14 @@ class CommentController extends AbstractController
 
     /**
      * show all comments for article
+     * @Route("/articleComments", name="article_comments", methods={"GET", "POST"})
      */
     public function getArticleComments(Request $request, $article = null): Response
     {   
         if (null === $article) {
             throw $this->createNotFoundException('Article not found!');
         }
-
+        
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $comment->setArticle($article);
@@ -42,6 +43,19 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $comment->setUser($this->getUser());
+            $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
+            $comment->setId(($commentRepository->getMaxId())['idMax'] + 1);
+
+            if (null !== $request->request->get('parentCommentId') && 
+                ($commentRepository->find($request->request->get('parentCommentId')))
+            ) {
+                $parentComment = new Comment();
+                $parentComment = $commentRepository->find($request->request->get('parentCommentId'));
+                $comment->setChildNodeOf($parentComment);
+            } else {
+                $parentComment = null;
+            }
+            
             $entityManager->persist($comment);
             $entityManager->flush();
 
@@ -56,8 +70,25 @@ class CommentController extends AbstractController
             ->getRepository(Comment::class)
             ->findBy(['article' => $article]);
 
+        dump($this->getDoctrine()->getRepository(Comment::class)->getRootNodes());    
+
+        $comments2 = $this->getDoctrine()->getRepository(Comment::class)->getTree('', 't', ['articleId' => $article->getId()]);
+        dump($comments2);
+
+        $comments3 = $this->getDoctrine()->getRepository(Comment::class)
+            ->createQueryBuilder('c')
+            ->Join('c.article', 'carticle')
+            ->andWhere("c.materializedPath = ''")
+            ->andWhere('carticle.id = :aid')
+            ->setParameter('aid', $article->getId())
+            ->getQuery()
+            ->getResult()
+        ;
+        dump($comments3);
+
         return $this->render('comment/articleComments.html.twig', [
-            'comments' => $comments,
+            'comments' => $comments3,
+            'commentsCount' => count($comments),
             'comment' => $comment,
             'form' => $form->createView(),
         ]);

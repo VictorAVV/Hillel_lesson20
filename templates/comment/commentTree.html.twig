@@ -1,0 +1,22 @@
+{% for comment in comments %}
+    <li class="">
+    <hr class="my-0">
+        <div class="comment-{{ comment.id }}">
+            <p class="my-0 text-secondary">
+                <small>
+                    <span class="text-primary">{{ comment.user.name | default('-unknown-') }}</span> {{ comment.createdAt ? comment.createdAt|date('Y-m-d H:i:s') : '' }}
+                </small>
+            </p>
+            <p class="my-0" id=''>{{ comment.content }}</p>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <p class="my-0"><small><a class="text-secondary btn-slide" href="{{ path('app_login') }}">Комментировать</a></small></p>
+            {% endif %}
+            {% if comment.childNodes %}
+                <ul class="">
+                    {% include "comment/commentTree.html.twig" with {'comments': comment.childNodes} %}
+                </ul>
+            {% endif %}
+
+        </div>
+    </li>
+{% endfor %}

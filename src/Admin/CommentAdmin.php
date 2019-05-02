@@ -25,7 +25,7 @@ final class CommentAdmin extends AbstractAdmin
                 'choice_label' => 'name',
             ])
             ->add('datetime')
-            ->add('parent_comment')
+            //->add('parent_comment')
             ;
     }
 
@@ -58,7 +58,7 @@ final class CommentAdmin extends AbstractAdmin
                 'choice_label' => 'name',
                 'required' => true,
             ])
-            ->add('parent_comment')
+            //->add('parent_comment')
             ;
     }
 
@@ -69,7 +69,7 @@ final class CommentAdmin extends AbstractAdmin
             ->add('content')
             ->add('user.name')
             ->add('datetime')
-            ->add('parent_comment')
+            //->add('parent_comment')
             ;
     }
 }

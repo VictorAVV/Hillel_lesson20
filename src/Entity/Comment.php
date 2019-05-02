@@ -10,13 +10,14 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Comment
+class Comment implements ORMBehaviors\Tree\NodeInterface, \ArrayAccess
 {
-    use ORMBehaviors\Timestampable\Timestampable;
+    use ORMBehaviors\Timestampable\Timestampable,
+        ORMBehaviors\Tree\Node;
 
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -32,11 +33,6 @@ class Comment
     private $content;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $parent_comment;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Article", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -46,6 +42,15 @@ class Comment
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      */
     private $user;
+    
+    /**
+     * @param  string
+     * @return null
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     public function getId(): ?int
     {
@@ -55,18 +60,6 @@ class Comment
     public function getContent(): ?string
     {
         return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    public function getParentComment(): ?int
-    {
-        return $this->parent_comment;
     }
 
     public function setParentComment(?int $parent_comment): self
@@ -88,12 +81,6 @@ class Comment
         return $this;
     }
 
-    /** @ORM\PrePersist */
-    public function setDatetimeForNewComment()
-    {   
-        $this->setDatetime(new \DateTime());
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -107,13 +94,13 @@ class Comment
     }
 
     /** @ORM\PrePersist */
-    public function setDatetimeForNewArticle()
+    public function setDatetimeForNewComment()
     {   
         $this->setCreatedAt(new \DateTime())->setUpdatedAt(new \DateTime());
     }
 
     /** @ORM\PreUpdate */
-    public function setUpdatedDatetimeForExistsArticle()
+    public function setUpdatedDatetimeForExistsComment()
     {   
         $this->setUpdatedAt(new \DateTime());
     }
