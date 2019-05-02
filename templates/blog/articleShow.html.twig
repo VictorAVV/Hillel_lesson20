@@ -22,14 +22,12 @@
     {% endif %}
     {{ article.content|raw }}
     <div class="article-author-date text-right">
-        {% if article.category %}<p class="mb-0"><i>Категория: </i>{{article.category}}</p>{% endif %}
-        {% if article.user.name is defined %}<p class="mb-0"><i>Автор: </i>{{article.user.name}}</p>{% endif %}
+        {% if article.category %}<p class="mb-0"><i class="text-secondary">Категория: </i>{{article.category}}</p>{% endif %}
+        {% if article.user.name is defined %}<p class="mb-0"><i class="text-secondary">Автор: </i>{{article.user.name}}</p>{% endif %}
         <div class="my-0">
             <small>
-                <p class="my-0">Дата создания:</p>
-                <p class="my-0">{{ article.createdAt|date('Y-m-d H:i:s') }}</p>
-                <p class="my-0">Дата изменения:</p>
-                <p class="my-0">{{ article.updatedAt|date('Y-m-d H:i:s') }}</p>
+                <p class="my-0"><i class="my-0 text-secondary">Дата создания: </i>{{ article.createdAt|date('Y-m-d H:i:s') }}</p>
+                <p class="my-0"><i class="my-0 text-secondary">Дата изменения: </i>{{ article.updatedAt|date('Y-m-d H:i:s') }}</p>
             </small>
         </div>
     </div>

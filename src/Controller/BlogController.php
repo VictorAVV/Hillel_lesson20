@@ -31,7 +31,7 @@ class BlogController extends AbstractController
         $articles = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), // Define the page parameter
-            5, // articles per page
+            10, // articles per page
             [
                 'defaultSortFieldName' => 'a.updatedAt', 
                 'defaultSortDirection' => 'desc'

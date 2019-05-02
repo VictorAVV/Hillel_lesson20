@@ -17,11 +17,13 @@
     </div>
     {% endif %}
 {% endfor %}
+<hr>
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <hr>
     {% if app.user.isBanned() %}
         <p class="text-danger">Вы забанены до {{ app.user.bannedUntil|date('Y/m/d') }} и не можете оставлять комментарии!</p>
     {% else %}
         {{ include('comment/_form.html.twig') }}
     {% endif %}
+{% else %}
+    <p class="text-muted"><a href="{{ path('app_login') }}">Зарегистрируйтесь</a>, чтобы иметь возможность писать комментарии!</p>
 {% endif %}

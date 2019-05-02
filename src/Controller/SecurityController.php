@@ -36,7 +36,6 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        // controller can be blank: it will never be executed!
         return new RedirectResponse($this->urlGenerator->generate('blog'));
     }
 
@@ -62,11 +61,9 @@ class SecurityController extends AbstractController
             $encoder = $encoderFactory->getEncoder($user);
             $encodedPassword = $encoder->encodePassword($request->request->get('userPassword'), $user->getSalt());
             */
-            
+            //https://symfony.com/doc/current/doctrine/registration_form
             $encodedPassword = $encoder->encodePassword($user, $request->request->get('user')['userPassword']);
             $user->setPassword($encodedPassword);
-
-            dump($user);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
