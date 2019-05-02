@@ -12,6 +12,8 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  */
 class Comment
 {
+    use ORMBehaviors\Timestampable\Timestampable;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -28,11 +30,6 @@ class Comment
      * ) 
      */
     private $content;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $datetime;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -63,18 +60,6 @@ class Comment
     public function setContent(string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getDatetime(): ?\DateTimeInterface
-    {
-        return $this->datetime;
-    }
-
-    public function setDatetime(\DateTimeInterface $datetime): self
-    {
-        $this->datetime = $datetime;
 
         return $this;
     }
@@ -119,5 +104,17 @@ class Comment
         $this->user = $user;
 
         return $this;
+    }
+
+    /** @ORM\PrePersist */
+    public function setDatetimeForNewArticle()
+    {   
+        $this->setCreatedAt(new \DateTime())->setUpdatedAt(new \DateTime());
+    }
+
+    /** @ORM\PreUpdate */
+    public function setUpdatedDatetimeForExistsArticle()
+    {   
+        $this->setUpdatedAt(new \DateTime());
     }
 }
