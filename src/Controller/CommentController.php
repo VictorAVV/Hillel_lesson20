@@ -40,10 +40,11 @@ class CommentController extends AbstractController
         $comment->setArticle($article);
         $form->handleRequest($request);
 
+        $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $comment->setUser($this->getUser());
-            $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
             $comment->setId(($commentRepository->getMaxId())['idMax'] + 1);
 
             if (null !== $request->request->get('parentCommentId') && 
@@ -66,36 +67,22 @@ class CommentController extends AbstractController
             //return $this->redirectToRoute('article_view', ['id' => $article->getId()]);
         }
 
-        $commentsCount = count($this->getDoctrine()
-            ->getRepository(Comment::class)
-            ->findBy(['article' => $article]));
-
-        //dump($this->getDoctrine()->getRepository(Comment::class)->getRootNodes());    
+        $commentsCount = $commentRepository->getCountAllCommentsOfArticle($article->getId());
         $comments = [];
-
-        $rootCommentsOfArticle = $this->getDoctrine()->getRepository(Comment::class)->createQueryBuilder('c')
-            ->Join('c.article', 'carticle')
-            ->andWhere("c.materializedPath = ''")
-            ->andWhere('carticle.id = :aid')
-            ->setParameter('aid', $article->getId())
-            ->getQuery()
-            ->getResult();
-        
-        dump($rootCommentsOfArticle);
+        $allRootComments = $commentRepository->getAllRootCommentsOfArticle($article->getId());
+        //dump($allRootComments);
 
         //если вызвать getTree() только один раз, то не прогрузятся все дочерние комментарии
-        foreach($rootCommentsOfArticle as $value){
-            $getTreeForRootComment = $this->getDoctrine()->getRepository(Comment::class)->getTree('/' . ($value->getId()), 't', ['articleId' => $article->getId()]);
-            if ($getTreeForRootComment) {
-                $comments[] = $getTreeForRootComment;
+        //поэтому вызываем getTree() для корневых комментариев у которых есть дочерние комментарии
+        foreach($allRootComments as $value){
+            if ($value['numberOfChild']) {
+                $comments[] = $this->getDoctrine()->getRepository(Comment::class)->getTree('/' . ($value[0]->getId()));
+            } else {
+                $comments[] = $value[0];
             }
         }
 
-        //$comments2 = $this->getDoctrine()->getRepository(Comment::class)->getTree('', 't', ['articleId' => $article->getId()]);
-        //dump($comments2);
-
-        dump($comments);
-
+        //dump($comments);
         return $this->render('comment/articleComments.html.twig', [
             'comments' => $comments,
             'commentsCount' => $commentsCount,

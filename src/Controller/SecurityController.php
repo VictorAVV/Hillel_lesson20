@@ -49,18 +49,6 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            /* пример из:
-            https://symfony.com/doc/current/components/security/authentication.html
-            нафига нужен - непонятно.
-
-            $defaultEncoder = new MessageDigestPasswordEncoder('sha512', true, 5000);
-            $encoderFactory = new EncoderFactory([
-                User::class => $defaultEncoder,
-            ]);
-            $encoder = $encoderFactory->getEncoder($user);
-            $encodedPassword = $encoder->encodePassword($request->request->get('userPassword'), $user->getSalt());
-            */
             //https://symfony.com/doc/current/doctrine/registration_form
             $encodedPassword = $encoder->encodePassword($user, $request->request->get('user')['userPassword']);
             $user->setPassword($encodedPassword);

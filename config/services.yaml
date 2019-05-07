@@ -45,3 +45,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Blog, label: Комментарии }
         public: true
+    
+    admin.users:
+        class: App\Admin\UserAdmin
+        arguments: [~, App\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Users, label: Пользователи }
+        public: true

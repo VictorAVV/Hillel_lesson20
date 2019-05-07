@@ -76,6 +76,10 @@ class BlogController extends AbstractController
             throw $this->createNotFoundException('Article not found!');
         }
 
+        if (!$this->getUser()->isSuperAdmin() && $this->getUser()->getId() !== $article->getUser()->getId()) {
+            throw $this->createNotFoundException("You can't edit this article!");
+        }
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -104,7 +108,11 @@ class BlogController extends AbstractController
         if (null == $article) {
             throw $this->createNotFoundException('Article not found!');
         }
-        
+
+        if (!$this->getUser()->isSuperAdmin() && $this->getUser()->getId() !== $article->getUser()->getId()) {
+            throw $this->createNotFoundException("You can't delete this article!");
+        }
+
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($article);

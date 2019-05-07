@@ -76,4 +76,46 @@ class CommentRepository extends ServiceEntityRepository
                 ;
         }
     }
+
+    /**
+     * get all root comments of article with number of child nodes
+     * @param $articleId - id of article
+     */
+    public function getAllRootCommentsOfArticle($articleId)
+    {  
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            "SELECT 
+                c1, 
+	            (SELECT 
+                    COUNT(c2.id) 
+                From 
+                    App\Entity\Comment as c2 
+                Where 
+                    c2.materializedPath = CONCAT('/', c1.id) 
+     	            OR c2.materializedPath LIKE CONCAT('/', c1.id, '/%') 
+                ) as numberOfChild
+            FROM 
+                App\Entity\Comment c1
+            WHERE 
+                c1.article = :articleId
+                AND c1.materializedPath = ''"
+        )->setParameter('articleId', $articleId);
+    
+        return $query->execute();
+    }  
+
+    /**
+     * @param $articleId - id of article
+     * @return count all comments of article
+     */
+    public function getCountAllCommentsOfArticle($articleId)
+    { 
+      return  $this->createQueryBuilder('c')
+        ->select('count(c.id)')
+        ->andWhere('c.article = :articleId')
+        ->setParameter('articleId', $articleId)
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
 }

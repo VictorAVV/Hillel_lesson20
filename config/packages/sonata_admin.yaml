@@ -6,6 +6,9 @@ sonata_admin:
         groups:
             Blog:
                 keep_open: true
+            Users:
+                keep_open: true
+                icon: '<i class="fa fa-user"></i>'
             Home:
                 keep_open: true
                 icon: '<i class="fa fa-home"></i>'
