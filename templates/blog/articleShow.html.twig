@@ -21,6 +21,12 @@
     </div>
     {% endif %}
     {{ article.content|raw }}
+    
+    <div class="like-dislike text-right">
+        <a class="like text-muted" href="/article/like"><i class="fa fa-thumbs-up"></i>Like</a>&nbsp;
+        <a class="like text-dark" href="/article/like"><i class="fa fa-thumbs-down"></i>Dislike</a>
+    </div>
+
     <div class="article-author-date text-right">
         {% if article.category %}<p class="mb-0"><i class="text-secondary">Категория: </i>{{article.category}}</p>{% endif %}
         {% if article.user.name is defined %}<p class="mb-0"><i class="text-secondary">Автор: </i>{{article.user.name}}</p>{% endif %}
