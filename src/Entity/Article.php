@@ -58,6 +58,11 @@ class Article
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Like", mappedBy="user")
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -155,6 +160,37 @@ class Article
     public function setUser(?user $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getArticle() === $this) {
+                $like->setArticle(null);
+            }
+        }
 
         return $this;
     }
