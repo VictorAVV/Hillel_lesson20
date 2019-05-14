@@ -56,7 +56,7 @@ class BlogController extends AbstractController
 
         $previousArticle = $articleRepository->findPrevNextArticles($article, 'prev');
         $nextArticle = $articleRepository->findPrevNextArticles($article, 'next');
-
+dump($article);
         return $this->render("blog/articleShow.html.twig", [
             'article' => $article,
             'request' => $request,
